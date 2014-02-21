@@ -1,59 +1,187 @@
-<?php /* @var $this Controller */ ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<?php
+$users = [
+    ['lat'=>-25.363882,'lng'=>131.044922,'title'=>'Австралия 1'],
+    ['lat'=>-22.363882,'lng'=>130.044922,'title'=>'Австралия 2'],
+    ['lat'=>-23.363882,'lng'=>121.044922,'title'=>'Австралия 3'],
+    ['lat'=>-24.363882,'lng'=>111.044922,'title'=>'Вода возле Австралии'],
+];
+?>
+
+<!DOCTYPE html>
+<html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="language" content="en" />
-
-	<!-- blueprint CSS framework -->
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/screen.css" media="screen, projection" />
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/print.css" media="print" />
-	<!--[if lt IE 8]>
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/ie.css" media="screen, projection" />
-	<![endif]-->
-
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
-
-	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
+    <title>Members Directory</title>
+    <link rel="stylesheet" href="css/reset.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2OG-xrf0I3mkBtxnajYDgWr4G3tUlUI4&sensor=true">
+    </script>
+    <script src="js/map.js"></script>
+    <script> var usersRawData = '<?=json_encode($users)?>'; </script>
 </head>
-
 <body>
+<div id="wrapper">
 
-<div class="container" id="page">
+    <div id="header">
+        <h1>Members Directory</h1>
+    </div>
 
-	<div id="header">
-		<div id="logo"><?php echo CHtml::encode(Yii::app()->name); ?></div>
-	</div><!-- header -->
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
 
-	<div id="mainmenu">
-		<?php $this->widget('zii.widgets.CMenu',array(
-			'items'=>array(
-				array('label'=>'Home', 'url'=>array('/site/index')),
-				array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
-				array('label'=>'Contact', 'url'=>array('/site/contact')),
-				array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-				array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
-			),
-		)); ?>
-	</div><!-- mainmenu -->
-	<?php if(isset($this->breadcrumbs)):?>
-		<?php $this->widget('zii.widgets.CBreadcrumbs', array(
-			'links'=>$this->breadcrumbs,
-		)); ?><!-- breadcrumbs -->
-	<?php endif?>
+    <form>
+        <div id="controls">
+            <div id="control-left">
 
-	<?php echo $content; ?>
+                <div class="control-row">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name"/>
+                </div>
 
-	<div class="clear"></div>
+                <div class="control-row">
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city"/>
+                </div>
 
-	<div id="footer">
-		Copyright &copy; <?php echo date('Y'); ?> by My Company.<br/>
-		All Rights Reserved.<br/>
-		<?php echo Yii::powered(); ?>
-	</div><!-- footer -->
+                <div class="control-row">
+                    <label for="name">Country:</label>
+                    <select name="country" id="country">
+                        <option value="">1</option>
+                    </select>
+                </div>
 
-</div><!-- page -->
+                <div class="control-row">
+                    <label for="credentials">Forum Credentials:</label>
+                    <select name="credentials" id="credentials">
+                        <option value="">1</option>
+                    </select>
+                </div>
 
+            </div>
+            <div id="control-right">
+
+                <div class="control-row">
+                    <label for="role">Role:</label>
+                    <select name="role" id="role">
+                        <option value="">1</option>
+                    </select>
+                </div>
+
+                <div class="control-row">
+                    <label for="areaExp">Area of Expertise:</label>
+                    <select name="areaExp" id="areaExp">
+                        <option value="">1</option>
+                    </select>
+                </div>
+
+                <div class="control-row">
+                    <label for="knowledge">Platform Knowledge:</label>
+                    <input type="text" id="knowledge" name="knowledge"/>
+                </div>
+
+                <div class="control-row">
+                    <label for="name">Available for Hire:</label>
+                    <input type="checkbox"/> <span>Yes</span>
+                </div>
+
+            </div>
+
+            <div class="clear"></div>
+
+            <div id="control-buttons">
+                <input type="submit" value="Search Members"/>
+                <input type="reset" value="Clear"/>
+            </div>
+
+        </div>
+    </form>
+
+    <table cellspacing="30">
+        <thead>
+            <tr>
+                <td>Name & Location</td>
+                <td>Role & Credentials</td>
+                <td>Expertise</td>
+                <td>Platform Knowledge</td>
+                <td>Available?</td>
+                <td>Learn More & Contact</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <h3>AndrewYouderian</h3>
+                    <p>eCommerceFuel.com Bozeman, United States</p>
+                </td>
+                <td>
+                    <p>Store Owner (F/T) Level 3</p>
+                </td>
+                <td>
+                    <h4>Marketing</h4>
+                    <p>SEO</p>
+                </td>
+                <td>
+                    <p>Magento</p>
+                    <p>Zendesk</p>
+                </td>
+                <td style="width: ">
+                    <p>Yes</p>
+                </td>
+                <td>
+                    <a href="#">See Full Profile</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h3>AndrewYouderian</h3>
+                    <p>eCommerceFuel.com Bozeman, United States</p>
+                </td>
+                <td>
+                    <p>Store Owner (F/T) Level 3</p>
+                </td>
+                <td>
+                    <h4>Marketing</h4>
+                    <p>SEO</p>
+                </td>
+                <td>
+                    <p>Magento</p>
+                    <p>Zendesk</p>
+                </td>
+                <td style="width: ">
+                    <p>Yes</p>
+                </td>
+                <td>
+                    <a href="#">See Full Profile</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h3>AndrewYouderian</h3>
+                    <p>eCommerceFuel.com Bozeman, United States</p>
+                </td>
+                <td>
+                    <p>Store Owner (F/T) Level 3</p>
+                </td>
+                <td>
+                    <h4>Marketing</h4>
+                    <p>SEO</p>
+                </td>
+                <td>
+                    <p>Magento</p>
+                    <p>Zendesk</p>
+                </td>
+                <td style="width: ">
+                    <p>Yes</p>
+                </td>
+                <td>
+                    <a href="#">See Full Profile</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div id="footer">2 of 350 members meet criteria</div>
+</div>
 </body>
 </html>
