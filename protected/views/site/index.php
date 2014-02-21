@@ -1,20 +1,165 @@
-<?php
-/* @var $this SiteController */
+<div id="wrapper">
 
-$this->pageTitle=Yii::app()->name;
-?>
+    <div id="header">
+        <h1>Members Directory</h1>
+    </div>
 
-<h1>Welcome to <i><?php echo CHtml::encode(Yii::app()->name); ?></i></h1>
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
 
-<p>Congratulations! You have successfully created your Yii application.</p>
+    <form>
+        <div id="controls">
+            <div id="control-left">
 
-<p>You may change the content of this page by modifying the following two files:</p>
-<ul>
-	<li>View file: <code><?php echo __FILE__; ?></code></li>
-	<li>Layout file: <code><?php echo $this->getLayoutFile('main'); ?></code></li>
-</ul>
+                <div class="control-row">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name"/>
+                </div>
 
-<p>For more details on how to further develop this application, please read
-the <a href="http://www.yiiframework.com/doc/">documentation</a>.
-Feel free to ask in the <a href="http://www.yiiframework.com/forum/">forum</a>,
-should you have any questions.</p>
+                <div class="control-row">
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city"/>
+                </div>
+
+                <div class="control-row">
+                    <label for="name">Country:</label>
+                    <select name="country" id="country">
+                        <option value="">1</option>
+                    </select>
+                </div>
+
+                <div class="control-row">
+                    <label for="credentials">Forum Credentials:</label>
+                    <select name="credentials" id="credentials">
+                        <option value="">1</option>
+                    </select>
+                </div>
+
+            </div>
+            <div id="control-right">
+
+                <div class="control-row">
+                    <label for="role">Role:</label>
+                    <select name="role" id="role">
+                        <option value="">1</option>
+                    </select>
+                </div>
+
+                <div class="control-row">
+                    <label for="areaExp">Area of Expertise:</label>
+                    <select name="areaExp" id="areaExp">
+                        <option value="">1</option>
+                    </select>
+                </div>
+
+                <div class="control-row">
+                    <label for="knowledge">Platform Knowledge:</label>
+                    <input type="text" id="knowledge" name="knowledge"/>
+                </div>
+
+                <div class="control-row">
+                    <label for="name">Available for Hire:</label>
+                    <input type="checkbox"/> <span>Yes</span>
+                </div>
+
+            </div>
+
+            <div class="clear"></div>
+
+            <div id="control-buttons">
+                <input type="submit" value="Search Members"/>
+                <input type="reset" value="Clear"/>
+            </div>
+
+        </div>
+    </form>
+
+    <table cellspacing="30">
+        <thead>
+        <tr>
+            <td>Name & Location</td>
+            <td>Role & Credentials</td>
+            <td>Expertise</td>
+            <td>Platform Knowledge</td>
+            <td>Available?</td>
+            <td>Learn More & Contact</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <h3>AndrewYouderian</h3>
+                <p>eCommerceFuel.com Bozeman, United States</p>
+            </td>
+            <td>
+                <p>Store Owner (F/T) Level 3</p>
+            </td>
+            <td>
+                <h4>Marketing</h4>
+                <p>SEO</p>
+            </td>
+            <td>
+                <p>Magento</p>
+                <p>Zendesk</p>
+            </td>
+            <td style="width: ">
+                <p>Yes</p>
+            </td>
+            <td>
+                <a href="#">See Full Profile</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>AndrewYouderian</h3>
+                <p>eCommerceFuel.com Bozeman, United States</p>
+            </td>
+            <td>
+                <p>Store Owner (F/T) Level 3</p>
+            </td>
+            <td>
+                <h4>Marketing</h4>
+                <p>SEO</p>
+            </td>
+            <td>
+                <p>Magento</p>
+                <p>Zendesk</p>
+            </td>
+            <td style="width: ">
+                <p>Yes</p>
+            </td>
+            <td>
+                <a href="#">See Full Profile</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>AndrewYouderian</h3>
+                <p>eCommerceFuel.com Bozeman, United States</p>
+            </td>
+            <td>
+                <p>Store Owner (F/T) Level 3</p>
+            </td>
+            <td>
+                <h4>Marketing</h4>
+                <p>SEO</p>
+            </td>
+            <td>
+                <p>Magento</p>
+                <p>Zendesk</p>
+            </td>
+            <td style="width: ">
+                <p>Yes</p>
+            </td>
+            <td>
+                <a href="#">See Full Profile</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div id="footer">2 of 350 members meet criteria</div>
+</div>
+
+<script> var usersRawData = '<?=json_encode($users)?>'; </script>
