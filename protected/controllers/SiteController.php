@@ -27,9 +27,15 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
-		$this->render('index');
+
+        $users = [
+            ['location'=>'Украина Симферополь','title'=>'Александр'],
+            ['location'=>'Украина Киев','title'=>'Виктор'],
+            ['location'=>'Украина Одесса','title'=>'Коля'],
+            ['location'=>'Украина Ялта','title'=>'Костя'],
+            ['location'=>'Россия','title'=>'Петя'],
+        ];
+		$this->render('index',['users'=>$users]);
 	}
 
 	/**
