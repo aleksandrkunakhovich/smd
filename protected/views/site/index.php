@@ -75,7 +75,7 @@
         </div>
     </form>
 
-    <table cellspacing="30">
+    <table>
         <thead>
         <tr>
             <td>Name & Location</td>
@@ -87,75 +87,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>
-                <h3>AndrewYouderian</h3>
-                <p>eCommerceFuel.com Bozeman, United States</p>
-            </td>
-            <td>
-                <p>Store Owner (F/T) Level 3</p>
-            </td>
-            <td>
-                <h4>Marketing</h4>
-                <p>SEO</p>
-            </td>
-            <td>
-                <p>Magento</p>
-                <p>Zendesk</p>
-            </td>
-            <td style="width: ">
-                <p>Yes</p>
-            </td>
-            <td>
-                <a href="#">See Full Profile</a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h3>AndrewYouderian</h3>
-                <p>eCommerceFuel.com Bozeman, United States</p>
-            </td>
-            <td>
-                <p>Store Owner (F/T) Level 3</p>
-            </td>
-            <td>
-                <h4>Marketing</h4>
-                <p>SEO</p>
-            </td>
-            <td>
-                <p>Magento</p>
-                <p>Zendesk</p>
-            </td>
-            <td style="width: ">
-                <p>Yes</p>
-            </td>
-            <td>
-                <a href="#">See Full Profile</a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h3>AndrewYouderian</h3>
-                <p>eCommerceFuel.com Bozeman, United States</p>
-            </td>
-            <td>
-                <p>Store Owner (F/T) Level 3</p>
-            </td>
-            <td>
-                <h4>Marketing</h4>
-                <p>SEO</p>
-            </td>
-            <td>
-                <p>Magento</p>
-                <p>Zendesk</p>
-            </td>
-            <td style="width: ">
-                <p>Yes</p>
-            </td>
-            <td>
-                <a href="#">See Full Profile</a>
-            </td>
-        </tr>
+
         </tbody>
     </table>
 
