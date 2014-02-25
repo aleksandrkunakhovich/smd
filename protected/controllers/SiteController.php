@@ -27,15 +27,15 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-        /*$users = [
-            ['location'=>'Украина Симферополь','title'=>'Александр'],
-            ['location'=>'Украина Киев','title'=>'Виктор'],
-            ['location'=>'Украина Одесса','title'=>'Коля'],
-            ['location'=>'Украина Ялта','title'=>'Костя'],
-            ['location'=>'Россия','title'=>'Петя'],
-        ];*/
+        $model = new SearchForm;
+
+        if (isset($_POST['SearchForm'])) {
+            $model->attributes = $_POST['SearchForm'];
+        }
+
 		$this->render('index', array(
-            'users' => Yii::app()->vanilla->usersMultiByUserID(205)
+            'users' => Yii::app()->vanilla->usersMultiByUserID(205),
+            'model' => $model
         ));
 	}
 
