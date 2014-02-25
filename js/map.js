@@ -8,7 +8,7 @@ function initialize() {
     geocoder = new google.maps.Geocoder();
     var myLatlng = new google.maps.LatLng(40.10,12.40);
     var mapOptions = {
-        zoom: 2,
+        zoom: 1,
         center: myLatlng
     }
 
@@ -43,8 +43,8 @@ function setAllMarkers() {
     // Add all markers
     var data = JSON.parse(usersRawData);
     for( index in data) {
-        var address = data[index].location;
-        var title  = data[index].title;
+        var address = data[index].Location;
+        var title  = data[index].Name;
         createMarker(address, title);
     }
 
