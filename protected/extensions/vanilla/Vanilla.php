@@ -19,6 +19,21 @@ class Vanilla extends CComponent
         return $data->Users;
     }
 
+    public function getUsers($params=array())
+    {
+        $data = $this->request('users','multi',$params);
+        return $data->Users;
+    }
+
+    public function getUserProfile($userID)
+    {
+        $data = $this->request('users','get',array('UserID'=>$userID));
+        if (isset($data->Profile))
+            return (array)$data->Profile;
+        else
+            return null;
+    }
+
     public function getRolesList()
     {
         $roles = array();
@@ -28,6 +43,23 @@ class Vanilla extends CComponent
             $roles[$role->RoleID] = $role->Name;
 
         return $roles;
+    }
+
+    public function getUserRanks()
+    {
+        return array(
+            '1'=>'New Member',
+            '2'=>'Member',
+            '3'=>'Contributor',
+            '4'=>'Top Contributor',
+            '5'=>'Expert'
+        );
+    }
+
+    public function getUserRankByID($id)
+    {
+        $ranks = $this->getUserRanks();
+        return isset($ranks[$id])?$ranks[$id]:'';
     }
 
     protected function request($category,$method,$params=array())

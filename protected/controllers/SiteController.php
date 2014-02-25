@@ -21,6 +21,12 @@ class SiteController extends Controller
 		);
 	}
 
+    public function actionTest()
+    {
+        $data = Yii::app()->vanilla->getUsers(array('Role.ID'=>'2'));
+        CVarDumper::dump($data,10,true);
+    }
+
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
@@ -31,11 +37,59 @@ class SiteController extends Controller
 
         if (isset($_POST['SearchForm'])) {
             $model->attributes = $_POST['SearchForm'];
+            $users = Yii::app()->vanilla->getUsers(array('Users.ID'=>implode(',',range(200,250)))); //TODO add filters
+        } else {
+            $users = Yii::app()->vanilla->getUsers(array('Users.ID'=>implode(',',range(200,205))));
         }
 
+        $usersArray = array();
+        foreach($users as $index => $user) {
+            $usersArray[$index] = (array)$user;
+            $profile = Yii::app()->vanilla->getUserProfile($user->UserID);
+            $usersArray[$index]['UserRoles'] = (isset($profile['UserRoles'])) ? implode(',',$profile['UserRoles']) : '';
+            $usersArray[$index]['RankLabel'] = Yii::app()->vanilla->getUserRankByID($user->RankID);
+        }
+
+#CVarDumper::dump($usersArray,10,true);exit;
+        $userPerPage = Yii::app()->params['users_per_page'];
+        $countUsers  = count($usersArray);
+        $dataProvider = new CArrayDataProvider($usersArray,array(
+            'keyField'=>'UserID',
+            'pagination'=>array(
+                'pageSize'=>$userPerPage,
+            ),
+        ));
+
+        $gridParams = array(
+            'dataProvider' => $dataProvider,
+            'emptyText'    => 'No users found',
+            'summaryText'  => false,
+            'cssFile'      => false,
+            'columns'      => array(
+                array('header'=>'Name & Location','type'=>'raw','value'=>function($data){
+                    return '<h3>' . $data["Name"] . '</h3>' . '<p>' . $data["Location"] . '</p>';
+                }),
+                array('header'=>'Role & Credentials','type'=>'raw','value'=>function($data){
+                        return '<p>' . $data['UserRoles'] . '</p>' . '<p>' . $data['RankLabel'] . '</p>';
+                }),
+                array('header'=>'Available?','type'=>'raw','value'=>function($data) {
+                        if (isset($data['Online']))
+                            return ($data['Online'])? 'Yes':'No';
+                        else
+                            return 'No';
+                }),
+                array('header'=>'Learn More & Contact','type'=>'raw','value'=>function($data){
+                        return CHtml::link('See Full Profile','https://'.Yii::app()->params['vanilla_api_domain'].'.vanillaforums.com/profile/reactions/'.$data['UserID']);
+                })
+            )
+        );
+
 		$this->render('index', array(
-            'users' => Yii::app()->vanilla->usersMultiByUserID(205),
-            'model' => $model
+            'users'      => $users,
+            'model'      => $model,
+            'gridParams' => $gridParams,
+            'countUsers' => $countUsers,
+            'countDisplayedUsers' => ($countUsers > $userPerPage) ? $userPerPage : $countUsers
         ));
 	}
 
