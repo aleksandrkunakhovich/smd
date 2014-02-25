@@ -8,59 +8,66 @@
         <div id="map"></div>
     </div>
 
-    <form>
+    <?php $form = $this->beginWidget('CActiveForm'); ?>
         <div id="controls">
             <div id="control-left">
 
                 <div class="control-row">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name"/>
+                    <?php echo $form->labelEx($model,'name'); ?>
+                    <?php echo $form->textField($model,'name'); ?>
                 </div>
 
                 <div class="control-row">
-                    <label for="city">City:</label>
-                    <input type="text" id="city" name="city"/>
+                    <?php echo $form->labelEx($model,'city'); ?>
+                    <?php echo $form->textField($model,'city'); ?>
                 </div>
 
                 <div class="control-row">
-                    <label for="name">Country:</label>
-                    <select name="country" id="country">
-                        <option value="">1</option>
-                    </select>
+                    <?php echo $form->labelEx($model,'country'); ?>
+                    <?php echo $form->dropDownList($model,'country',array(
+                        'United States'=>'United States',
+                        'Australia'=>'Australia',
+                        'United Kingdom'=>'United Kingdom',
+                        'Canada'=>'Canada',
+                        'China'=>'China'
+                    ),array('empty'=>'Select')); ?>
                 </div>
 
                 <div class="control-row">
-                    <label for="credentials">Forum Credentials:</label>
-                    <select name="credentials" id="credentials">
-                        <option value="">1</option>
-                    </select>
+                    <?php echo $form->labelEx($model,'rank'); ?>
+                    <?php echo $form->dropDownList($model,'rank',array(
+                        '1'=>'New Member',
+                        '2'=>'Member',
+                        '3'=>'Contributor',
+                        '4'=>'Top Contributor',
+                        '5'=>'Expert'
+                    ),array('empty'=>'Select')); ?>
                 </div>
 
             </div>
             <div id="control-right">
 
                 <div class="control-row">
-                    <label for="role">Role:</label>
-                    <select name="role" id="role">
-                        <option value="">1</option>
-                    </select>
+                    <?php echo $form->labelEx($model,'role'); ?>
+                    <?php echo $form->dropDownList($model,'role',Yii::app()->vanilla->getRolesList(),array('empty'=>'Select')); ?>
                 </div>
 
                 <div class="control-row">
-                    <label for="areaExp">Area of Expertise:</label>
-                    <select name="areaExp" id="areaExp">
-                        <option value="">1</option>
-                    </select>
+                    <?php echo $form->labelEx($model,'area'); ?>
+                    <?php echo $form->dropDownList($model,'area',array(
+                        'primary' => 'Primary area',
+                        'other' => 'Other area'
+                    ),array('empty'=>'Select')); ?>
                 </div>
 
                 <div class="control-row">
-                    <label for="knowledge">Platform Knowledge:</label>
-                    <input type="text" id="knowledge" name="knowledge"/>
+                    <?php echo $form->labelEx($model,'knowledge'); ?>
+                    <?php echo $form->textField($model,'knowledge'); ?>
                 </div>
 
                 <div class="control-row">
-                    <label for="name">Available for Hire:</label>
-                    <input type="checkbox"/> <span>Yes</span>
+                    <?php echo $form->labelEx($model,'online'); ?>
+                    <?php echo $form->checkBox($model,'online'); ?> <span>Yes</span>
                 </div>
 
             </div>
@@ -68,12 +75,12 @@
             <div class="clear"></div>
 
             <div id="control-buttons">
-                <input type="submit" value="Search Members"/>
-                <input type="reset" value="Clear"/>
+                <?php echo CHtml::submitButton('Search Members'); ?>
+                <?php echo CHtml::resetButton('Clear'); ?>
             </div>
 
         </div>
-    </form>
+    <?php $this->endWidget(); ?>
 
     <table>
         <thead>
