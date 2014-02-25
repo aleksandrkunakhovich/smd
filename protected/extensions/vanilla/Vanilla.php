@@ -19,6 +19,17 @@ class Vanilla extends CComponent
         return $data->Users;
     }
 
+    public function getRolesList()
+    {
+        $roles = array();
+        $data = $this->request('roles','list');
+
+        foreach($data->Roles as $role)
+            $roles[$role->RoleID] = $role->Name;
+
+        return $roles;
+    }
+
     protected function request($category,$method,$params=array())
     {
         $url = 'https://'
