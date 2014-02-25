@@ -27,15 +27,16 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-
-        $users = [
+        /*$users = [
             ['location'=>'Украина Симферополь','title'=>'Александр'],
             ['location'=>'Украина Киев','title'=>'Виктор'],
             ['location'=>'Украина Одесса','title'=>'Коля'],
             ['location'=>'Украина Ялта','title'=>'Костя'],
             ['location'=>'Россия','title'=>'Петя'],
-        ];
-		$this->render('index',['users'=>$users]);
+        ];*/
+		$this->render('index', array(
+            'users' => Yii::app()->vanilla->usersMultiByUserID(205)
+        ));
 	}
 
 	/**
