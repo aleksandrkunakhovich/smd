@@ -35,13 +35,7 @@
 
                 <div class="control-row">
                     <?php echo $form->labelEx($model,'rank'); ?>
-                    <?php echo $form->dropDownList($model,'rank',array(
-                        '1'=>'New Member',
-                        '2'=>'Member',
-                        '3'=>'Contributor',
-                        '4'=>'Top Contributor',
-                        '5'=>'Expert'
-                    ),array('empty'=>'Select')); ?>
+                    <?php echo $form->dropDownList($model,'rank',Yii::app()->vanilla->getUserRanks(),array('empty'=>'Select')); ?>
                 </div>
 
             </div>
@@ -82,23 +76,11 @@
         </div>
     <?php $this->endWidget(); ?>
 
-    <table>
-        <thead>
-        <tr>
-            <td>Name & Location</td>
-            <td>Role & Credentials</td>
-            <td>Expertise</td>
-            <td>Platform Knowledge</td>
-            <td>Available?</td>
-            <td>Learn More & Contact</td>
-        </tr>
-        </thead>
-        <tbody>
 
-        </tbody>
-    </table>
+    <?php $this->widget('zii.widgets.grid.CGridView', $gridParams);?>
 
-    <div id="footer">2 of 350 members meet criteria</div>
+
+    <div id="footer"><?php echo $countDisplayedUsers; ?> of <?php echo $countUsers; ?> members meet criteria</div>
 </div>
 
 <script> var usersRawData = '<?=json_encode($users)?>'; </script>
