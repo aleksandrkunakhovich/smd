@@ -1,13 +1,14 @@
 var map;
 var infowindow;
 var geocoder;
+var markers = [];
 
 // Create map
 function initialize() {
     geocoder = new google.maps.Geocoder();
-    var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+    var myLatlng = new google.maps.LatLng(40.10,12.40);
     var mapOptions = {
-        zoom: 4,
+        zoom: 1,
         center: myLatlng
     }
 
@@ -20,8 +21,9 @@ function createMarker(address,title) {
     geocoder.geocode( { 'address': address}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
 
+            var position = results[0].geometry.location;
             var marker = new google.maps.Marker({
-                position: results[0].geometry.location,
+                position: position,
                 map: map
             });
 
@@ -29,18 +31,28 @@ function createMarker(address,title) {
                 infowindow.setContent(title);
                 infowindow.open(map, this);
             });
+
+            markers.push(position);
         }
     });
 }
 
 // Set markers on map
 function setAllMarkers() {
+
+    // Add all markers
     var data = JSON.parse(usersRawData);
     for( index in data) {
-        var adress = data[index].location;
-        var title  = data[index].title;
-        createMarker(adress, title);
+        var address = data[index].Location;
+        var title  = data[index].Name;
+        createMarker(address, title);
     }
+
+    // set map center
+    /*var markersBounds = new google.maps.LatLngBounds();
+    for(var i = 0; i < markers.length; i++)
+        markersBounds.extend(markers[i]);
+    map.setCenter(markersBounds.getCenter(), map.fitBounds(markersBounds));*/
 }
 
 // Run

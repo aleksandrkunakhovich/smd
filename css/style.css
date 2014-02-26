@@ -69,6 +69,8 @@ input[type=submit] {
 #map-container {
     border: 1px solid #e2e2e2;
     padding: 2px;
+    width: 640px;
+    margin: 0 auto;
 }
 
 #map-container {
@@ -76,7 +78,7 @@ input[type=submit] {
 }
 
 #map {
-    width: 914px;
+    width: 640px;
     height: 370px;
 }
 
@@ -117,17 +119,18 @@ table {
     width: 100%;
 }
 
-thead td {
+thead th {
     border-bottom: 2px solid #333;
     font-weight: bold;
     padding-bottom: 15px;
     font-size: 14px;
+    text-align: left;
 }
 
 td {
     padding: 20px 20px 20px 0;
     font-size: 14px;
-    border-bottom: 1px solid #666;
+    border-bottom: 1px solid #C8C8C8;
 }
 
 tr td:last-of-type {
