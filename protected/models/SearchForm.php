@@ -5,7 +5,7 @@ class SearchForm extends CFormModel
     public $name;
     public $city;
     public $country;
-    public $rank;
+    public $RankID;
     public $role;
     public $area;
     public $knowledge;
@@ -14,7 +14,7 @@ class SearchForm extends CFormModel
     public function rules()
     {
         return array(
-            array('name,city,country,rank,role,area,knowledge,online','safe')
+            array('name,city,country,RankID,role,area,knowledge,online','safe')
         );
     }
 
@@ -24,7 +24,7 @@ class SearchForm extends CFormModel
             'name'      => 'Name',
             'city'      => 'City',
             'country'   => 'Country',
-            'rank'      => 'Forum Credentials',
+            'RankID'    => 'Forum Credentials',
             'role'      => 'Role',
             'area'      => 'Area of Expertise',
             'knowledge' => 'Platform Knowledge',

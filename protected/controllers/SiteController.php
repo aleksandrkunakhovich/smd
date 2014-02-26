@@ -23,37 +23,55 @@ class SiteController extends Controller
 
     public function actionTest()
     {
-        $data = Yii::app()->vanilla->getUsers(array('Role.ID'=>'2'));
+        $data = array(
+            array('name'=>'Alex','Age'=>23),
+            array('name'=>'Felix','Age'=>22),
+        );
+
+        $data = Yii::app()->vanilla->getFilteredUsers($data,array('Name'=>'x'));
+
         CVarDumper::dump($data,10,true);
     }
 
 	/**
 	 * This is the default 'index' action that is invoked
+     * 'UserID' => '202'
+    'Name' => 'DavidRosenberg'
+    'Title' => null
+    'Location' => 'MEMBER HAS LEFT THE COMMUNITY - Boulder, CO'
+    'About' => null
+    'Email' => 'drosenalex@hotmail.com'
+    'Gender' => 'u'
+    'CountVisits' => '74'
+    'CountInvitations' => '0'
+    'CountNotifications' => '0'
+    'Admin' => '0'
+    'Verified' => '0'
+    'Banned' => '0'
+    'Deleted' => '0'
+    'Points' => '18'
+    'CountDiscussions' => '4'
+    'CountComments' => '73'
+    'CountBookmarks' => null
+    'CountBadges' => '0'
+    'RankID' => null
+    'UserRoles' => ''
+    'RankLabel' => ''
 	 * when an action is not explicitly requested by users.
 	 */
 	public function actionIndex()
 	{
         $model = new SearchForm;
-
+        $users = Yii::app()->vanilla->getUsers(array('Users.ID'=>implode(',',range(200,205))));
+#CVarDumper::dump($users,10,true);exit;
         if (isset($_POST['SearchForm'])) {
             $model->attributes = $_POST['SearchForm'];
-            $users = Yii::app()->vanilla->getUsers(array('Users.ID'=>implode(',',range(200,250)))); //TODO add filters
-        } else {
-            $users = Yii::app()->vanilla->getUsers(array('Users.ID'=>implode(',',range(200,205))));
+            $users = Yii::app()->vanilla->getFilteredUsers($users,$_POST['SearchForm']);
         }
 
-        $usersArray = array();
-        foreach($users as $index => $user) {
-            $usersArray[$index] = (array)$user;
-            $profile = Yii::app()->vanilla->getUserProfile($user->UserID);
-            $usersArray[$index]['UserRoles'] = (isset($profile['UserRoles'])) ? implode(',',$profile['UserRoles']) : '';
-            $usersArray[$index]['RankLabel'] = Yii::app()->vanilla->getUserRankByID($user->RankID);
-        }
-
-#CVarDumper::dump($usersArray,10,true);exit;
         $userPerPage = Yii::app()->params['users_per_page'];
-        $countUsers  = count($usersArray);
-        $dataProvider = new CArrayDataProvider($usersArray,array(
+        $countUsers  = count($users);
+        $dataProvider = new CArrayDataProvider($users,array(
             'keyField'=>'UserID',
             'pagination'=>array(
                 'pageSize'=>$userPerPage,
@@ -72,12 +90,7 @@ class SiteController extends Controller
                 array('header'=>'Role & Credentials','type'=>'raw','value'=>function($data){
                         return '<p>' . $data['UserRoles'] . '</p>' . '<p>' . $data['RankLabel'] . '</p>';
                 }),
-                array('header'=>'Available?','type'=>'raw','value'=>function($data) {
-                        if (isset($data['Online']))
-                            return ($data['Online'])? 'Yes':'No';
-                        else
-                            return 'No';
-                }),
+                array('header'=>'Available?','type'=>'raw','value'=>'$data["Online"]'),
                 array('header'=>'Learn More & Contact','type'=>'raw','value'=>function($data){
                         return CHtml::link('See Full Profile','https://'.Yii::app()->params['vanilla_api_domain'].'.vanillaforums.com/profile/reactions/'.$data['UserID']);
                 })

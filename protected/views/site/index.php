@@ -34,8 +34,8 @@
                 </div>
 
                 <div class="control-row">
-                    <?php echo $form->labelEx($model,'rank'); ?>
-                    <?php echo $form->dropDownList($model,'rank',Yii::app()->vanilla->getUserRanks(),array('empty'=>'Select')); ?>
+                    <?php echo $form->labelEx($model,'RankID'); ?>
+                    <?php echo $form->dropDownList($model,'RankID',Yii::app()->vanilla->getUserRanks(),array('empty'=>'Select')); ?>
                 </div>
 
             </div>

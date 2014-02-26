@@ -21,8 +21,26 @@ class Vanilla extends CComponent
 
     public function getUsers($params=array())
     {
+        $users = array();
         $data = $this->request('users','multi',$params);
-        return $data->Users;
+
+        foreach($data->Users as $index => $user) {
+            $users[$index] = (array)$user;
+            $profile = Yii::app()->vanilla->getUserProfile($user->UserID);
+
+            if (isset($user->Location)) {
+                $loc = explode(',',$user->Location);
+                if (isset($loc[0]))
+                    $users[$index]['City'] = $loc[0];
+                if (isset($loc[1]))
+                    $users[$index]['Country'] = $loc[1];
+            }
+
+            $users[$index]['UserRoles'] = isset($profile['UserRoles']) ? implode(',',$profile['UserRoles']) :'';
+            $users[$index]['RankLabel'] = Yii::app()->vanilla->getUserRankByID($user->RankID);
+            $users[$index]['Online'] = (isset($user->Online) && $user->Online == true) ? 'Yes' : 'No';
+        }
+        return $users;
     }
 
     public function getUserProfile($userID)
@@ -60,6 +78,27 @@ class Vanilla extends CComponent
     {
         $ranks = $this->getUserRanks();
         return isset($ranks[$id])?$ranks[$id]:'';
+    }
+
+    public function getFilteredUsers($Users,$filters)
+    {
+        foreach ($Users AS $rowIndex => $row) {
+            foreach ($filters AS $key => $searchValue) {
+                if (!is_null($searchValue) AND $searchValue !== '') {
+                    $compareValue = null;
+                    $key = ucfirst($key);
+
+                    if (!array_key_exists($key, $row))
+                        continue;
+
+                    $compareValue = $row[$key];
+                    if (stripos($compareValue, $searchValue) === false) {
+                        unset($Users[$rowIndex]);
+                    }
+                }
+            }
+        }
+        return $Users;
     }
 
     protected function request($category,$method,$params=array())
