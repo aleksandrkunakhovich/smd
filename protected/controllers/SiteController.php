@@ -62,7 +62,7 @@ class SiteController extends Controller
 	public function actionIndex()
 	{
         $model = new SearchForm;
-        $users = Yii::app()->vanilla->getUsers(array('Users.ID'=>implode(',',range(200,205))));
+        $users = Yii::app()->vanilla->getUsers(array('Users.ID'=>implode(',',range(200,255))));
 #CVarDumper::dump($users,10,true);exit;
         if (isset($_POST['SearchForm'])) {
             $model->attributes = $_POST['SearchForm'];
