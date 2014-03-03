@@ -8,7 +8,7 @@
         <div id="map"></div>
     </div>
 
-    <?php $form = $this->beginWidget('CActiveForm'); ?>
+    <?php $form = $this->beginWidget('CActiveForm',array('htmlOptions'=>array('id'=>'search_form'))); ?>
         <div id="controls">
             <div id="control-left">
 
@@ -34,8 +34,8 @@
                 </div>
 
                 <div class="control-row">
-                    <?php echo $form->labelEx($model,'RankID'); ?>
-                    <?php echo $form->dropDownList($model,'RankID',Yii::app()->vanilla->getUserRanks(),array('empty'=>'Select')); ?>
+                    <?php echo $form->labelEx($model,'forum_credentials'); ?>
+                    <?php echo $form->dropDownList($model,'forum_credentials',Yii::app()->vanilla->getUserRanks(),array('empty'=>'Select')); ?>
                 </div>
 
             </div>
@@ -43,20 +43,21 @@
 
                 <div class="control-row">
                     <?php echo $form->labelEx($model,'role'); ?>
-                    <?php echo $form->dropDownList($model,'role',Yii::app()->vanilla->getRolesList(),array('empty'=>'Select')); ?>
+                    <?php echo $form->dropDownList($model,'role',Yii::app()->vanilla->getRoles(),array('empty'=>'Select')); ?>
                 </div>
 
                 <div class="control-row">
-                    <?php echo $form->labelEx($model,'area'); ?>
-                    <?php echo $form->dropDownList($model,'area',array(
-                        'primary' => 'Primary area',
-                        'other' => 'Other area'
+                    <?php echo $form->labelEx($model,'area_experience'); ?>
+                    <?php echo $form->dropDownList($model,'area_experience',array(
+                        'Content Marketing' => 'Content Marketing',
+                        'SEO' => 'SEO',
+                        'Paid Traffic'=>'Paid Traffic'
                     ),array('empty'=>'Select')); ?>
                 </div>
 
                 <div class="control-row">
-                    <?php echo $form->labelEx($model,'knowledge'); ?>
-                    <?php echo $form->textField($model,'knowledge'); ?>
+                    <?php echo $form->labelEx($model,'platform_knowledge'); ?>
+                    <?php echo $form->textField($model,'platform_knowledge'); ?>
                 </div>
 
                 <div class="control-row">
@@ -70,7 +71,7 @@
 
             <div id="control-buttons">
                 <?php echo CHtml::submitButton('Search Members'); ?>
-                <?php echo CHtml::resetButton('Clear'); ?>
+                <?php echo CHtml::resetButton('Clear',array('id'=>'reset_button')); ?>
             </div>
 
         </div>
@@ -83,4 +84,4 @@
     <div id="footer"><?php echo $countDisplayedUsers; ?> of <?php echo $countUsers; ?> members meet criteria</div>
 </div>
 
-<script> var usersRawData = '<?=json_encode($users)?>'; </script>
+<script> var usersRawData = '<?=json_encode(User::getLocations())?>'; </script>

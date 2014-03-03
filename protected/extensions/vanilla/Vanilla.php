@@ -13,46 +13,44 @@ class Vanilla extends CComponent
         $this->_domain = Yii::app()->params['vanilla_api_domain'];
     }
 
-    public function usersMultiByUserID($id)
-    {
-        $data = $this->request('users','multi',array('UserID'=>$id));
-        return $data->Users;
-    }
-
-    public function getUsers($params=array())
-    {
-        $users = array();
-        $data = $this->request('users','multi',$params);
-
-        foreach($data->Users as $index => $user) {
-            $users[$index] = (array)$user;
-            $profile = Yii::app()->vanilla->getUserProfile($user->UserID);
-
-            if (isset($user->Location)) {
-                $loc = explode(',',$user->Location);
-                if (isset($loc[0]))
-                    $users[$index]['City'] = $loc[0];
-                if (isset($loc[1]))
-                    $users[$index]['Country'] = $loc[1];
-            }
-
-            $users[$index]['UserRoles'] = isset($profile['UserRoles']) ? implode(',',$profile['UserRoles']) :'';
-            $users[$index]['RankLabel'] = Yii::app()->vanilla->getUserRankByID($user->RankID);
-            $users[$index]['Online'] = (isset($user->Online) && $user->Online == true) ? 'Yes' : 'No';
-        }
-        return $users;
-    }
-
     public function getUserProfile($userID)
     {
         $data = $this->request('users','get',array('UserID'=>$userID));
         if (isset($data->Profile))
-            return (array)$data->Profile;
+            return $data->Profile;
         else
             return null;
     }
 
-    public function getRolesList()
+    public function parseProfile($userID)
+    {
+        $data = array();
+        $url = $this->getProfileLink($userID);
+        $profilePage = file_get_contents($url);
+
+        preg_match('/<dd class="ProfileExtend ProfileCountryDirectory">([a-z\s]+)/imu',$profilePage,$country);
+        $data['country'] = isset($country[1]) ? $country[1] : null;
+
+        preg_match('/<dd class="ProfileExtend ProfileCityDirectory">([a-z\s]+)/imu',$profilePage,$city);
+        $data['city'] = isset($city[1]) ? $city[1] : null;
+
+        preg_match('/<dd class="Roles">(.+)<\/dd>/imu',$profilePage,$roles);
+        $data['roles'] = isset($roles[1]) ? $roles[1] : null;
+        $data['roles'] = explode(',', strip_tags($data['roles']) );
+
+        # primary and other areas in area_experience
+        preg_match('/<dd class="ProfileExtend ProfilePrimaryExpertiseDirectory">(.+?)<\/dd>/imu',$profilePage,$primary_area);
+        $data['area_experience'] = isset($primary_area[1]) ? '<p><b>'.$primary_area[1].'</b></p>' : null;
+        preg_match('/<dd class="ProfileExtend ProfileOtherExpertiseDirectory">(.+?)<\/dd>/imu',$profilePage,$other_area);
+        $data['area_experience'] .= isset($other_area[1]) ? '<p>'.$other_area[1].'</p>' : null;
+
+        preg_match('/<dd class="ProfileExtend ProfilePlatformKnowledgeDirectory">(.+?)<\/dd>/imu',$profilePage,$platform_knowledge);
+        $data['platform_knowledge'] = isset($platform_knowledge[1]) ? $platform_knowledge[1] : null;
+
+        return $data;
+    }
+
+    public function getRoles()
     {
         $roles = array();
         $data = $this->request('roles','list');
@@ -65,12 +63,19 @@ class Vanilla extends CComponent
 
     public function getUserRanks()
     {
-        return array(
+        /*return array(
             '1'=>'New Member',
             '2'=>'Member',
             '3'=>'Contributor',
             '4'=>'Top Contributor',
             '5'=>'Expert'
+        );*/
+        return array(
+            '1'=>'Level 1',
+            '2'=>'Level 2',
+            '3'=>'Level 3',
+            '4'=>'Level 4',
+            '5'=>'Level 5'
         );
     }
 
@@ -80,25 +85,12 @@ class Vanilla extends CComponent
         return isset($ranks[$id])?$ranks[$id]:'';
     }
 
-    public function getFilteredUsers($Users,$filters)
+    public function getProfileLink($UserID)
     {
-        foreach ($Users AS $rowIndex => $row) {
-            foreach ($filters AS $key => $searchValue) {
-                if (!is_null($searchValue) AND $searchValue !== '') {
-                    $compareValue = null;
-                    $key = ucfirst($key);
+        $url = 'https://'.$this->_domain.'.vanillaforums.com/api/v1/profile/'.$UserID
+            .'/ANY_STRING?access_token='.$this->_token;
 
-                    if (!array_key_exists($key, $row))
-                        continue;
-
-                    $compareValue = $row[$key];
-                    if (stripos($compareValue, $searchValue) === false) {
-                        unset($Users[$rowIndex]);
-                    }
-                }
-            }
-        }
-        return $Users;
+        return $url;
     }
 
     protected function request($category,$method,$params=array())
