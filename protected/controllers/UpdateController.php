@@ -2,7 +2,7 @@
 
 class UpdateController extends Controller
 {
-    public function actionRoles()
+    /*public function actionRoles()
     {
         $roles = Yii::app()->vanilla->getRoles();
         if (empty($roles))
@@ -16,7 +16,7 @@ class UpdateController extends Controller
         }
 
         echo 'Updated list of roles.';
-    }
+    }*/
 
     public function actionUsers($start,$end)
     {

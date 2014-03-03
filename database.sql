@@ -37,21 +37,10 @@ CREATE TABLE IF NOT EXISTS `role` (
 --
 
 INSERT INTO `role` (`id`, `title`) VALUES
-(2, 'Guest'),
-(3, 'Unconfirmed'),
-(4, 'Applicant'),
-(8, 'Member'),
-(16, 'Administrator'),
-(32, 'Moderator'),
-(35, 'Forum'),
-(36, 'Removed'),
 (37, 'Store Owner'),
 (38, 'Store Owner (Full Time)'),
 (39, 'Industry Professional'),
-(40, 'Service Provider'),
-(41, '$250K+'),
-(43, '$1 Mil+'),
-(44, '$2.5 Mil+');
+(40, 'Service Provider');
 
 -- --------------------------------------------------------
 

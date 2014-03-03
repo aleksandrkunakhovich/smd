@@ -43,7 +43,7 @@
 
                 <div class="control-row">
                     <?php echo $form->labelEx($model,'role'); ?>
-                    <?php echo $form->dropDownList($model,'role',Yii::app()->vanilla->getRoles(),array('empty'=>'Select')); ?>
+                    <?php echo $form->dropDownList($model,'role',CHtml::ListData(Role::model()->findAll(),'id','title'),array('empty'=>'Select')); ?>
                 </div>
 
                 <div class="control-row">
