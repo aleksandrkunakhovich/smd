@@ -84,4 +84,4 @@
     <div id="footer"><?php echo $countDisplayedUsers; ?> of <?php echo User::model()->count(); ?> members meet criteria</div>
 </div>
 
-<script> var usersRawData = '<?=json_encode(User::getLocations())?>'; </script>
+<script> var usersData = JSON.parse('<?=json_encode(User::getLocations())?>'); </script>

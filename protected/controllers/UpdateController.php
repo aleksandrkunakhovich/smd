@@ -44,7 +44,7 @@ class UpdateController extends Controller
             if (isset($data['city']))
                 $user->city = $data['city'];
 
-            if (isset($profile->Location))
+            if (isset($profile->Location) && !empty($profile->Location) && strpos($profile->Location,'MEMBER')===false)
                 $user->location = $profile->Location;
 
             if (isset($profile->RankID))
