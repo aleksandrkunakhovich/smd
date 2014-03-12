@@ -122,12 +122,6 @@ class User extends CActiveRecord
 
     public static function getLocations()
     {
-        $locations = array();
-        $users = self::model()->findAll('location IS NOT NULL');
-
-        foreach($users as $user)
-            $locations[] = array('Location'=>$user->location, 'Name'=>$user->name);
-
-        return $locations;
+        return Yii::app()->db->createCommand('select name as Name,location as Location from user where location is not null')->queryAll();
     }
 }
