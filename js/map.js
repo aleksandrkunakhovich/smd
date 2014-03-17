@@ -2,8 +2,6 @@ var map;
 var infowindow;
 var geocoder;
 var markers = [];
-var userIndex = 0;
-var intervalObj;
 
 // Create map
 function initialize() {
@@ -19,44 +17,29 @@ function initialize() {
 }
 
 // Create one marker
-function createMarker() {//address,title
-    if (usersData[userIndex] == undefined)
-        clearInterval(intervalObj);
+function createMarker(latitude, longitude, title) {
 
-    var address = usersData[userIndex].Location;
-    var title  = usersData[userIndex].Name;
-
-    geocoder.geocode( { 'address': address}, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-
-            var position = results[0].geometry.location;
-            var marker = new google.maps.Marker({
-                position: position,
-                map: map
-            });
-
-            google.maps.event.addListener(marker, 'click', function() {
-                infowindow.setContent(title);
-                infowindow.open(map, this);
-            });
-
-            markers.push(position);
-        }
+    var position = new google.maps.LatLng(latitude, longitude);
+    var marker = new google.maps.Marker({
+        position: position,
+        map: map
     });
-    userIndex++;
+
+    google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(title);
+        infowindow.open(map, this);
+    });
+
+    markers.push(position);
 }
 
 // Set markers on map
 function setAllMarkers() {
-
-    intervalObj = window.setInterval(createMarker,500);
-
-
-    /*
     for( index in usersData) {
-        var address = usersData[index].Location;
-        var title  = usersData[index].Name;
-        //createMarker(address, title);alert(title);
+        var latitude = usersData[index].latitude;
+        var longitude = usersData[index].longitude;
+        var title  = usersData[index].name;
+        createMarker(latitude, longitude, title);
     }
 
     // set map center

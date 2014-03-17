@@ -36,7 +36,7 @@ class User extends CActiveRecord
 			array('id, forum_credentials, online', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, city, country, location, forum_credentials, primary_area, other_area, online, area_experience, platform_knowledge, role', 'safe', 'on'=>'search'),
+			array('id, name, city, country, location, forum_credentials, primary_area, other_area, online, area_experience, platform_knowledge, role, latitude, longitude', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -122,6 +122,6 @@ class User extends CActiveRecord
 
     public static function getLocations()
     {
-        return Yii::app()->db->createCommand('select name as Name,location as Location from user where location is not null and location <>"" group by location order by id asc')->queryAll();
+        return Yii::app()->db->createCommand('select name,latitude,longitude from user where latitude is not null and longitude group by location order by id asc')->queryAll();
     }
 }

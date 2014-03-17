@@ -44,8 +44,15 @@ class UpdateController extends Controller
             if (isset($data['city']))
                 $user->city = $data['city'];
 
-            if (isset($profile->Location) && !empty($profile->Location) && strpos($profile->Location,'MEMBER')===false)
+            if (isset($profile->Location) && !empty($profile->Location) && strpos($profile->Location,'MEMBER')===false) {
                 $user->location = $profile->Location;
+                $geo = Yii::app()->vanilla->geoCoding($user->location);
+                if (!empty($geo['latitude']) && !empty($geo['longitude'])) {
+                    $user->latitude = $geo['latitude'];
+                    $user->longitude = $geo['longitude'];
+                }
+            }
+
 
             if (isset($profile->RankID))
                 $user->forum_credentials = $profile->RankID;
@@ -81,5 +88,9 @@ class UpdateController extends Controller
             $user->save();
         }
         echo 'Insert or update users complete';
+    }
+
+    public function actionTest(){
+        var_dump(Yii::app()->vanilla->geoCoding('Chicago, IL'));
     }
 } 
